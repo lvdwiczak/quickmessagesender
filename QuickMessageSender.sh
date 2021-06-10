@@ -26,7 +26,9 @@ function mainPanel()
 			adminLoginPanel ;;
 			3) exit 0 ;;
 			*) clear
+			tput setaf 1
 			echo $wrongChoice
+			tput setaf 7
 			mainPanel ;;
 		esac
 }
@@ -86,7 +88,9 @@ function adminPanel()
 			echo "Program zakonczyl dzialanie"
 			exit 0 ;;
 		*) clear
-			echo "!!!!Podano zly wybor!!!!"
+			tput setaf 1
+			echo $wrongChoice
+			tput setaf 7
 			adminPanel ;;
 	esac
 }
@@ -106,7 +110,9 @@ function userLoginPanel()
 		fi
 		
 		if(! [ -d "$path/users/$Login" ]) then
+			echo setaf 3
 			echo "Uzytkownik nie istnieje"
+			echo setaf 7
 		else
 			cd "$path/users/$Login"
 			if(! [ -f "password.txt" ] ) then
@@ -122,7 +128,9 @@ function userLoginPanel()
 					userPanel
 				else
 					clear
+					tput setaf 1
 					echo "!!!Podano zle haslo!!!"
+					tput setaf 7
 					echo $gap
 					userLoginPanel
 				fi
@@ -187,7 +195,9 @@ function createUser()
 		fi
 	done
 	clear
+	tput setaf 2
 	echo "Konto uzytkownika zostalo utworzone"
+	tput setaf 7
 }
 
 function deleteUser()
@@ -206,14 +216,18 @@ function deleteUser()
 	fi
 	
 	if( [ "$Login" == "admin" ] ) then
+		tput setaf 1
 		echo "Nie mozna usunac admina"
+		tput setaf 7
 		deleteUser
 	fi
 	
 	rm -r $Login
 	
 	clear
+	tput setaf 3
 	echo "Konto uzytkownika $Login zostalo usuniete"
+	tput setaf 7
 }
 
 function sendMessage()
@@ -228,7 +242,9 @@ function sendMessage()
 		2) clear
 			sendMessageToUser ;;
 		*) clear
+			tput setaf 1
 			echo $wrongChoice
+			tput setaf 7
 			echo $gap
 			sendMessage ;;
 	esac
@@ -249,6 +265,9 @@ function sendMessageToAll()
 		fi
 		cd "$f/mailbox"
 		echo $contentOfMessage > "$nameOfMessage.txt"
+		tput setaf 2
+		echo "Wiadomosc zostala wyslana wszystkim"
+		tput setaf 7
 		chmod 777 "$nameOfMessage.txt"
 	done
 	adminPanel
@@ -259,7 +278,9 @@ function sendMessageToUser()
 	read -p "Podaj nazwe uzytkownika, ktoremu chcesz wyslac wiadomosc> " nameOfUser
 	if(! [ -d "$path/users/$nameOfUser" ]) then
 		clear
+		tput setaf 3
 		echo "Uzytkownik nie istnieje"
+		tput setaf 7
 		sendMessageToUser
 	fi
 	
@@ -267,6 +288,9 @@ function sendMessageToUser()
 	read -p "Podaj nazwe wiadomosci> " nameOfMessage
 	cd "$path/users/$nameOfUser/mailbox"
 	echo $contentOfMessage > "$nameOfMessage.txt"
+	tput setaf 2
+	echo "Wiadomosc wyslana pomyslnie"
+	tput setaf 7
 	adminPanel
 }
 
